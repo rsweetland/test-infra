@@ -1,0 +1,31 @@
+services:
+  api:
+    image: node:20-alpine  # Use the official Node.js 20 Alpine image
+    container_name: tmp_api
+    env_file:
+      - ./.env
+      - ./packages/api/.env.local
+    environment:
+      - PORT=${API_PORT}
+    volumes:
+      - ./packages/api:/app
+    working_dir: /app  # Set the working directory to /app
+    command: node server.js
+    ports:
+      - "${API_PORT}:${API_PORT}"  # Map container port 3000 to host port 80
+    depends_on:
+      - users
+
+  users:
+    image: node:20-alpine
+    container_name: tmp_users
+    env_file:
+      - ./packages/users/.env.local
+    environment:
+      - PORT=${USERS_PORT}
+    volumes:
+      - ./packages/users:/app
+    working_dir: /app
+    command: node server.js
+    ports:
+      - "${USERS_PORT}:${USERS_PORT}"
