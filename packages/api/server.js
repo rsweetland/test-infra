@@ -4,7 +4,12 @@ const port = process.env.PORT || 3000;
 const usersServicePort = process.env.USERS_PORT || 3336;
 
 const server = http.createServer((req, res) => {
-  if (req.url === '/users' && req.method === 'GET') {
+  console.log(`TEST_VARIABLE: ${process.env.TEST_VARIABLE}`);
+  if (req.url === '/' && req.method === 'GET') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end(`Hello! TEST_VARIABLE: ${process.env.TEST_VARIABLE}`);
+  } else if (req.url === '/users' && req.method === 'GET') {
     // Forward the request to the users microservice
     const options = {
       hostname: 'users', // This is the service name in docker-compose
